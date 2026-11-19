@@ -1,0 +1,7 @@
+# PMAS Portal — Apache Configuration
+
+# Bypass ngrok browser warning page
+Header always set ngrok-skip-browser-warning "true"
+
+# Enable mod_rewrite
+Options -Indexes

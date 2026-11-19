@@ -1,0 +1,575 @@
+/* ============================================================
+   PMAS Admission Module — Stylesheet
+   ============================================================ */
+
+/* ---- HERO BANNER ---- */
+.admission-hero {
+    background: linear-gradient(135deg, var(--pmas-black) 0%, var(--pmas-red-dark) 60%, var(--pmas-red-light) 100%);
+    color: var(--pmas-white);
+    padding: 48px 20px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.admission-hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+}
+
+.admission-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+}
+
+.adm-emblem {
+    width: 86px; height: 86px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--pmas-gold);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 0 24px rgba(255,215,0,0.3), 0 0 0 4px rgba(255,215,0,0.1);
+    background: rgba(0,0,0,0.3);
+}
+
+.adm-emblem img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+}
+
+.adm-title {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: 1px;
+}
+
+.adm-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    margin: 0 0 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.adm-batch-badge {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,215,0,0.4);
+    color: var(--pmas-gold);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    max-width: 90%;
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* ---- CONTAINER ---- */
+.admission-container {
+    padding: 32px 15px 48px;
+    max-width: 960px;
+}
+
+/* ---- STEP PROGRESS ---- */
+.adm-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 4px 0;
+}
+
+.adm-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #aaa;
+    white-space: nowrap;
+}
+
+.adm-step span {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #888;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.adm-step.active span {
+    background: var(--pmas-red);
+    color: white;
+}
+
+.adm-step.active {
+    color: var(--pmas-red);
+    font-weight: 600;
+}
+
+.adm-step-line {
+    height: 2px;
+    width: 40px;
+    background: #ddd;
+    flex-shrink: 0;
+    margin-bottom: 16px;
+}
+
+/* ---- SECTIONS ---- */
+.adm-section {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #e8e8e8;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.adm-section-header {
+    background: linear-gradient(90deg, var(--pmas-dark), var(--pmas-red-dark));
+    color: white;
+    padding: 14px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.adm-section-header i { color: var(--pmas-gold); }
+
+.adm-section-body { padding: 22px; }
+
+/* ---- NOTICES ---- */
+.adm-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    margin-bottom: 16px;
+}
+
+.adm-notice.info    { background: #d1ecf1; color: #0c5460; border-left: 4px solid #17a2b8; }
+.adm-notice.warning { background: #fff3cd; color: #856404; border-left: 4px solid #ffc107; }
+.adm-notice.danger  { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+
+/* ---- EE BOX ---- */
+.adm-ee-box {
+    background: rgba(192,0,26,0.05);
+    border: 1px solid rgba(192,0,26,0.2);
+    border-radius: 8px;
+    padding: 16px 18px;
+}
+
+.adm-ee-title {
+    font-weight: 700;
+    color: var(--pmas-red);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ---- DOCUMENT UPLOAD ITEM ---- */
+.adm-doc-item {
+    background: #fafafa;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    padding: 12px 14px;
+    transition: border-color 0.2s;
+}
+
+.adm-doc-item:hover { border-color: var(--pmas-red); }
+
+/* ---- OATH BOX ---- */
+.adm-oath-box {
+    background: linear-gradient(135deg, rgba(13,13,13,0.04), rgba(192,0,26,0.05));
+    border: 1px solid rgba(192,0,26,0.2);
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+/* ---- SUCCESS SCREEN ---- */
+.adm-success-box {
+    background: white;
+    border-radius: 16px;
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    border-top: 5px solid #28a745;
+    margin-bottom: 32px;
+}
+
+.adm-success-icon {
+    font-size: 64px;
+    color: #28a745;
+    margin-bottom: 16px;
+}
+
+.adm-success-box h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--pmas-dark);
+    margin-bottom: 8px;
+}
+
+.adm-tracking-box {
+    background: var(--pmas-dark);
+    color: white;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 24px auto;
+    max-width: 400px;
+    border: 2px solid var(--pmas-gold);
+}
+
+.adm-tracking-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+}
+
+.adm-tracking-num {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--pmas-gold);
+    letter-spacing: 2px;
+}
+
+.adm-tracking-note {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+}
+
+/* ---- TIMELINE (success page) ---- */
+.adm-timeline {
+    text-align: left;
+    max-width: 480px;
+    margin: 24px auto 0;
+}
+
+.adm-timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+}
+
+.adm-tl-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    color: #888;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.adm-timeline-item.done .adm-tl-dot {
+    background: var(--pmas-red);
+    color: white;
+}
+
+/* ---- TRACK TIMELINE ---- */
+.adm-track-timeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    overflow-x: auto;
+    gap: 0;
+}
+
+.adm-track-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    position: relative;
+}
+
+.adm-track-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 60%;
+    width: 80%;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 0;
+}
+
+.adm-track-item.done:not(:last-child)::after {
+    background: var(--pmas-red);
+}
+
+.adm-track-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    color: #aaa;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    z-index: 1;
+    position: relative;
+}
+
+.adm-track-item.done .adm-track-dot {
+    background: var(--pmas-red);
+    color: white;
+}
+
+.adm-track-label {
+    font-size: 10px;
+    color: #888;
+    text-align: center;
+    max-width: 80px;
+}
+
+.adm-track-item.done .adm-track-label {
+    color: var(--pmas-red);
+    font-weight: 600;
+}
+
+/* ---- EVAL ITEMS ---- */
+.adm-eval-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+}
+
+.adm-eval-item.pass { background: rgba(40,167,69,0.08); border-left: 3px solid #28a745; }
+.adm-eval-item.fail { background: rgba(192,0,26,0.07);  border-left: 3px solid var(--pmas-red); }
+
+.adm-eval-item.pass i { color: #28a745; font-size: 18px; }
+.adm-eval-item.fail i { color: var(--pmas-red); font-size: 18px; }
+
+.adm-eval-item strong { display: block; }
+.adm-eval-item small  { display: block; color: #888; }
+
+/* ---- RESULT BANNER ---- */
+.adm-result-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.adm-result-banner.pass {
+    background: linear-gradient(135deg, #0d4a1a, #28a745);
+    color: white;
+    box-shadow: 0 4px 16px rgba(40,167,69,0.3);
+}
+
+.adm-result-banner.fail {
+    background: linear-gradient(135deg, var(--pmas-dark), var(--pmas-red-dark));
+    color: white;
+    box-shadow: 0 4px 16px rgba(192,0,26,0.3);
+}
+
+.adm-result-banner.passed { background: linear-gradient(135deg, #0d4a1a, #28a745); color: white; }
+.adm-result-banner.failed { background: linear-gradient(135deg, var(--pmas-dark), var(--pmas-red-dark)); color: white; }
+
+/* ---- RESULTS BOARD EMBLEM (scroll/proclamation icon) ---- */
+.adm-results-emblem {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.35);
+    border: 2px solid var(--pmas-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    box-shadow: 0 0 20px rgba(255,215,0,0.25), 0 0 0 4px rgba(255,215,0,0.08);
+}
+
+.adm-results-emblem i {
+    font-size: 32px;
+    color: var(--pmas-gold);
+}
+
+/* ---- RESULTS HEADER ---- */
+.adm-results-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, var(--pmas-dark), var(--pmas-red-dark));
+    color: white;
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    border-left: 5px solid var(--pmas-gold);
+}
+
+.adm-results-header i {
+    font-size: 32px;
+    color: var(--pmas-gold);
+}
+
+/* ---- DOC REVIEW ITEM ---- */
+.adm-doc-review-item {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+}
+
+/* ---- DOC STATUS ITEM (track page) ---- */
+.adm-doc-status-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+.adm-doc-status-item.pending  { background: #fff9e6; border-left: 3px solid #ffc107; }
+.adm-doc-status-item.verified { background: #f0fff4; border-left: 3px solid #28a745; }
+.adm-doc-status-item.rejected { background: #fff5f5; border-left: 3px solid #dc3545; }
+
+.adm-doc-status-item i { font-size: 20px; opacity: 0.6; }
+
+/* ============================================================
+   ADMISSION — Mobile Responsive
+   ============================================================ */
+
+@media (max-width: 767px) {
+    .admission-hero { padding: 24px 12px 20px; }
+    .adm-title      { font-size: 18px; letter-spacing: 0.5px; }
+    .adm-subtitle   { font-size: 11px; }
+    .adm-emblem     { width: 58px; height: 58px; margin-bottom: 10px; }
+    .adm-batch-badge{ font-size: 11px; padding: 5px 12px; }
+
+    .admission-container { padding: 14px 10px 32px; max-width: 100%; }
+
+    /* Steps bar — compact */
+    .adm-steps      { justify-content: center; overflow-x: auto; padding-bottom: 4px; }
+    .adm-step       { font-size: 9px; min-width: 48px; }
+    .adm-step span  { width: 24px; height: 24px; font-size: 10px; }
+    .adm-step-line  { width: 16px; min-width: 10px; }
+
+    /* Section headers */
+    .adm-section-header { font-size: 12px; padding: 10px 12px; gap: 8px; }
+    .adm-section-body   { padding: 12px; }
+
+    /* Full-width columns on mobile */
+    .adm-section .row > [class*="col-md-"] {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Document items */
+    .adm-doc-item { padding: 10px 12px; }
+
+    /* Oath box */
+    .adm-oath-box { padding: 14px; font-size: 12.5px; }
+
+    /* Success screen */
+    .adm-success-box  { padding: 20px 14px; }
+    .adm-success-icon { font-size: 48px; }
+    .adm-success-box h2 { font-size: 20px; }
+    .adm-tracking-box { padding: 14px 16px; }
+    .adm-tracking-num { font-size: 17px; letter-spacing: 1px; }
+    .adm-timeline     { padding: 0 4px; }
+    .adm-timeline-item{ font-size: 12px; }
+
+    /* Track timeline — stack vertically */
+    .adm-track-timeline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 0;
+    }
+    .adm-track-item {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        flex: none;
+    }
+    .adm-track-item:not(:last-child)::after { display: none; }
+    .adm-track-label { max-width: none; font-size: 12px; text-align: left; }
+    .adm-track-dot   { flex-shrink: 0; }
+
+    /* Eval items */
+    .adm-eval-item { padding: 8px 10px; font-size: 12px; }
+
+    /* Result banner */
+    .adm-result-banner { padding: 14px 16px; gap: 12px; }
+    .adm-result-banner i { font-size: 28px; }
+
+    /* Results header */
+    .adm-results-header { padding: 14px 16px; gap: 10px; }
+    .adm-results-header i { font-size: 24px; }
+
+    /* Doc status items */
+    .adm-doc-status-item { font-size: 11px; }
+
+    /* Notice boxes */
+    .adm-notice { padding: 10px 12px; font-size: 12.5px; gap: 10px; }
+
+    /* EE box */
+    .adm-ee-box { padding: 12px 14px; }
+    /* Batch badge — prevent awkward mid-word wrap */
+    .adm-batch-badge {
+        white-space: normal;
+        word-break: break-word;
+        text-align: center;
+        line-height: 1.5;
+        font-size: 11px;
+        max-width: 90%;
+        padding: 5px 14px;
+    }
+}
+
+@media (max-width: 400px) {
+    .adm-title  { font-size: 16px; }
+    .adm-emblem { width: 50px; height: 50px; }
+    .adm-tracking-num { font-size: 14px; }
+    .adm-section-header { font-size: 11px; }
+
+    .adm-batch-badge {
+        white-space: normal;
+        text-align: center;
+        line-height: 1.4;
+        font-size: 11px;
+        padding: 5px 12px;
+        max-width: 95%;
+    }
+}

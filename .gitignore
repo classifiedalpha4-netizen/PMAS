@@ -1,0 +1,25 @@
+# Uploaded files (too large for git, store separately)
+uploads/
+assets/img/profiles/
+assets/img/pma_logo.png
+
+# Database exports (contain sensitive data)
+*.sql
+
+# XAMPP / server files
+*.log
+*.bak
+*.tmp
+
+# Windows system files
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# PHP error logs
+error_log
