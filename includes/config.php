@@ -36,6 +36,20 @@ if (session_status() === PHP_SESSION_NONE) {
 // ============================================================
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 if ($conn->connect_error) {
+    // On Railway: show a friendly setup page instead of crashing
+    if (!empty(getenv('RAILWAY_ENVIRONMENT'))) {
+        die('<!DOCTYPE html><html><head><title>PMAS — Setup Required</title>
+        <style>body{font-family:sans-serif;max-width:600px;margin:60px auto;padding:20px;background:#1a1a1a;color:#fff;}
+        h2{color:#C0001A;}a{color:#FFD700;}code{background:#333;padding:3px 8px;border-radius:4px;}</style></head>
+        <body><h2>⚙️ PMAS — Database Not Connected</h2>
+        <p>MySQL environment variables are not set yet.</p>
+        <p>In Railway: go to your <strong>PMAS service → Variables</strong> and add references to your MySQL service:</p>
+        <ul><li><code>MYSQLHOST</code></li><li><code>MYSQLUSER</code></li>
+        <li><code>MYSQLPASSWORD</code></li><li><code>MYSQLDATABASE</code></li><li><code>MYSQLPORT</code></li></ul>
+        <p>Then redeploy. Once connected, visit 
+        <a href="/setup_db.php?key=pmas_setup_2026">/setup_db.php?key=pmas_setup_2026</a> to create the tables.</p>
+        </body></html>');
+    }
     die('<div style="font-family:sans-serif;color:red;padding:20px;">
         <strong>Database Connection Failed:</strong> ' . $conn->connect_error . '
         <br><small>Please ensure MySQL is running and the database <em>' . DB_NAME . '</em> exists.</small>
