@@ -1,17 +1,19 @@
 <?php
 // ============================================================
 // Database Configuration
+// Railway provides env vars: MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT
+// Falls back to localhost (XAMPP) when env vars are not set
 // ============================================================
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'pmas_db');
+define('DB_HOST', getenv('MYSQLHOST')     ?: getenv('DB_HOST') ?: 'localhost');
+define('DB_USER', getenv('MYSQLUSER')     ?: getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: getenv('DB_PASS') ?: '');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'pmas_db');
+define('DB_PORT', (int)(getenv('MYSQLPORT') ?: 3306));
 
 define('SITE_NAME', 'PMAS Portal');
 define('SITE_FULL_NAME', 'Philippine Military Academy System');
 
-// Auto-detect BASE_URL — works for both localhost and ngrok
-// ngrok forwards the original scheme via X-Forwarded-Proto header
+// BASE_URL — auto-detected, works on localhost, ngrok, and Railway
 if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $_protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'];
 } elseif (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
@@ -20,7 +22,9 @@ if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $_protocol = 'http';
 }
 $_host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-define('BASE_URL', $_protocol . '://' . $_host . '/PMAS/');
+// On Railway the app runs at root (/), on XAMPP it runs at /PMAS/
+$_isRailway = !empty(getenv('RAILWAY_ENVIRONMENT'));
+define('BASE_URL', $_protocol . '://' . $_host . ($_isRailway ? '/' : '/PMAS/'));
 
 // Session start
 if (session_status() === PHP_SESSION_NONE) {
@@ -30,7 +34,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // ============================================================
 // Database Connection (MySQLi)
 // ============================================================
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 if ($conn->connect_error) {
     die('<div style="font-family:sans-serif;color:red;padding:20px;">
         <strong>Database Connection Failed:</strong> ' . $conn->connect_error . '
