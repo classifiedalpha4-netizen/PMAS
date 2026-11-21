@@ -22,7 +22,8 @@ if ($filterStatus) $where .= " AND a.submission_status = '" . $conn->real_escape
 $applicants = $conn->query("
     SELECT a.*,
            (SELECT COUNT(*) FROM applicant_documents ad WHERE ad.applicant_id = a.id) AS doc_count,
-           TIMESTAMPDIFF(HOUR, a.bg_check_start, NOW()) AS hours_since_submission
+           TIMESTAMPDIFF(HOUR, a.bg_check_start, NOW()) AS hours_since_submission,
+           DATE_ADD(a.bg_check_start, INTERVAL 2 DAY) AS bg_check_due
     FROM applicants a
     $where
     ORDER BY a.submitted_at DESC

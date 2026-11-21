@@ -21,8 +21,10 @@ $bgLogs    = $conn->query("SELECT bc.*, u.full_name AS checker_name FROM bg_chec
 $error   = '';
 $success = '';
 
-// 2-day check
-$bgDue   = $applicant['bg_check_due'];
+// 2-day check — compute from bg_check_start (bg_check_due is not a stored column in MySQL)
+$bgDue   = !empty($applicant['bg_check_start'])
+           ? date('Y-m-d H:i:s', strtotime($applicant['bg_check_start'] . ' +2 days'))
+           : null;
 $now     = date('Y-m-d H:i:s');
 $bgReady = $bgDue && $now >= $bgDue;
 

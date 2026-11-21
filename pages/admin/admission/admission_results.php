@@ -29,7 +29,9 @@ if ($filterBatch) {
     $failedList  = $conn->query("SELECT a.id, a.tracking_number, a.last_name, a.first_name,
                                         a.email, a.review_notes
                                  FROM applicants a WHERE a.batch_id=$filterBatch AND a.submission_status='failed' ORDER BY a.last_name")->fetch_all(MYSQLI_ASSOC);
-    $pendingList = $conn->query("SELECT a.* FROM applicants a WHERE a.batch_id=$filterBatch AND a.submission_status IN ('submitted','under_review') ORDER BY a.submitted_at")->fetch_all(MYSQLI_ASSOC);
+    $pendingList = $conn->query("SELECT a.*,
+                                        DATE_ADD(a.bg_check_start, INTERVAL 2 DAY) AS bg_check_due
+                                 FROM applicants a WHERE a.batch_id=$filterBatch AND a.submission_status IN ('submitted','under_review') ORDER BY a.submitted_at")->fetch_all(MYSQLI_ASSOC);
 }
 
 $currentBatch = null;

@@ -107,7 +107,9 @@ if (!empty($tn)) {
     <?php
     // Determine current stage
     $status   = $applicant['submission_status'];
-    $bgDue    = $applicant['bg_check_due'];
+    $bgDue    = !empty($applicant['bg_check_start'])
+                ? date('Y-m-d H:i:s', strtotime($applicant['bg_check_start'] . ' +2 days'))
+                : null;
     $now      = date('Y-m-d H:i:s');
     $bgPassed = $bgDue && $now >= $bgDue;
     ?>
