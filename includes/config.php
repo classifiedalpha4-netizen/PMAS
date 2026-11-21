@@ -103,20 +103,21 @@ function getUser($conn, $userId) {
 }
 
 
-// Auto-add roblox_username column if not exists (MySQL-compatible check)
-$_col = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='users' AND COLUMN_NAME='roblox_username'");
-if ($_col && $_col->num_rows === 0) {
-    $conn->query("ALTER TABLE users ADD COLUMN roblox_username VARCHAR(100) DEFAULT NULL AFTER email");
-}
-
-// Auto-add certificate_number and transition_number to officer_profiles
-$_col2 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='certificate_number'");
-if ($_col2 && $_col2->num_rows === 0) {
-    $conn->query("ALTER TABLE officer_profiles ADD COLUMN certificate_number VARCHAR(40) DEFAULT NULL AFTER license_number");
-}
-$_col3 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='transition_number'");
-if ($_col3 && $_col3->num_rows === 0) {
-    $conn->query("ALTER TABLE officer_profiles ADD COLUMN transition_number VARCHAR(40) DEFAULT NULL AFTER certificate_number");
+// Auto-add columns only if users table already exists (MySQL-compatible)
+$_tbl = $conn->query("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='users'");
+if ($_tbl && $_tbl->num_rows > 0) {
+    $col1 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='users' AND COLUMN_NAME='roblox_username'");
+    if ($col1 && $col1->num_rows === 0) {
+        $conn->query("ALTER TABLE users ADD COLUMN roblox_username VARCHAR(100) DEFAULT NULL AFTER email");
+    }
+    $col2 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='certificate_number'");
+    if ($col2 && $col2->num_rows === 0) {
+        $conn->query("ALTER TABLE officer_profiles ADD COLUMN certificate_number VARCHAR(40) DEFAULT NULL AFTER license_number");
+    }
+    $col3 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='transition_number'");
+    if ($col3 && $col3->num_rows === 0) {
+        $conn->query("ALTER TABLE officer_profiles ADD COLUMN transition_number VARCHAR(40) DEFAULT NULL AFTER certificate_number");
+    }
 }
 
 
