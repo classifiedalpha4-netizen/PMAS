@@ -18,9 +18,11 @@ $conn->query("
     ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ");
 
-// Add new columns if not exist
-$conn->query("ALTER TABLE officer_profiles ADD COLUMN IF NOT EXISTS certificate_number VARCHAR(40) DEFAULT NULL AFTER license_number");
-$conn->query("ALTER TABLE officer_profiles ADD COLUMN IF NOT EXISTS transition_number VARCHAR(40) DEFAULT NULL AFTER certificate_number");
+// Add new columns if not exist (MySQL-compatible)
+$_c1 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='certificate_number'");
+if ($_c1 && $_c1->num_rows === 0) $conn->query("ALTER TABLE officer_profiles ADD COLUMN certificate_number VARCHAR(40) DEFAULT NULL AFTER license_number");
+$_c2 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='transition_number'");
+if ($_c2 && $_c2->num_rows === 0) $conn->query("ALTER TABLE officer_profiles ADD COLUMN transition_number VARCHAR(40) DEFAULT NULL AFTER certificate_number");
 
 // ---- Upload dir ----
 define('SIG_UPLOAD_DIR', __DIR__ . '/../../uploads/signatures/');

@@ -5,9 +5,11 @@ $pageTitle = 'My Officer License';
 
 define('SIG_UPLOAD_DIR', __DIR__ . '/../../uploads/signatures/');
 
-// Auto-create tables if needed
-$conn->query("ALTER TABLE officer_profiles ADD COLUMN IF NOT EXISTS certificate_number VARCHAR(40) DEFAULT NULL AFTER license_number");
-$conn->query("ALTER TABLE officer_profiles ADD COLUMN IF NOT EXISTS transition_number VARCHAR(40) DEFAULT NULL AFTER certificate_number");
+// Auto-create tables if needed (MySQL-compatible column checks)
+$_c1 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='certificate_number'");
+if ($_c1 && $_c1->num_rows === 0) $conn->query("ALTER TABLE officer_profiles ADD COLUMN certificate_number VARCHAR(40) DEFAULT NULL AFTER license_number");
+$_c2 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='transition_number'");
+if ($_c2 && $_c2->num_rows === 0) $conn->query("ALTER TABLE officer_profiles ADD COLUMN transition_number VARCHAR(40) DEFAULT NULL AFTER certificate_number");
 $conn->query("
     CREATE TABLE IF NOT EXISTS license_signatures (
         id INT AUTO_INCREMENT PRIMARY KEY,
