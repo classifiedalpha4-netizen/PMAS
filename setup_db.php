@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     role ENUM('admin','staff','officer','cadet') NOT NULL,
     full_name VARCHAR(100) NOT NULL,
-    rank VARCHAR(60) DEFAULT NULL,
+    `rank` VARCHAR(60) DEFAULT NULL,
     unit VARCHAR(100) DEFAULT NULL,
     email VARCHAR(100) DEFAULT NULL,
     roblox_username VARCHAR(100) DEFAULT NULL,
