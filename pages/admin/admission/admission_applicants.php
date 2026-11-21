@@ -131,21 +131,14 @@ include '../../../includes/header.php'; include '../../../includes/sidebar.php';
                     <th>Auto-Eval</th>
                     <th>Docs</th>
                     <th>Submitted</th>
-                    <th>BG Check Due</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
             <?php if (empty($applicants)): ?>
-                <tr><td colspan="9" class="text-center py-4 text-muted">No applicants found.</td></tr>
+                <tr><td colspan="8" class="text-center py-4 text-muted">No applicants found.</td></tr>
             <?php else: foreach ($applicants as $ap): ?>
-            <?php
-            $bgDue      = $ap['bg_check_due'];
-            $now        = date('Y-m-d H:i:s');
-            $bgReady    = $bgDue && $now >= $bgDue;
-            $hoursLeft  = $bgDue ? max(0, (strtotime($bgDue) - time()) / 3600) : null;
-            ?>
             <tr>
                 <td><code style="font-size:11px;"><?= sanitize($ap['tracking_number']) ?></code></td>
                 <td>
@@ -168,15 +161,6 @@ include '../../../includes/header.php'; include '../../../includes/sidebar.php';
                     </span>
                 </td>
                 <td style="font-size:11px;"><?= $ap['submitted_at'] ? date('M d, Y', strtotime($ap['submitted_at'])) : '—' ?></td>
-                <td style="font-size:11px;">
-                    <?php if ($bgDue): ?>
-                        <?php if ($bgReady): ?>
-                        <span class="badge bg-success">Ready</span>
-                        <?php else: ?>
-                        <span class="badge bg-warning text-dark">~<?= round($hoursLeft) ?>h</span>
-                        <?php endif; ?>
-                    <?php else: ?>—<?php endif; ?>
-                </td>
                 <td><?= getAdmissionStatusBadge($ap['submission_status']) ?></td>
                 <td>
                     <a href="<?= BASE_URL ?>pages/admin/admission/admission_review.php?id=<?= $ap['id'] ?>"
@@ -192,12 +176,7 @@ include '../../../includes/header.php'; include '../../../includes/sidebar.php';
         <div class="mobile-only p-3">
         <?php if (empty($applicants)): ?>
             <p class="text-center text-muted py-3">No applicants found.</p>
-        <?php else: foreach ($applicants as $ap):
-            $bgDue   = $ap['bg_check_due'];
-            $now     = date('Y-m-d H:i:s');
-            $bgReady = $bgDue && $now >= $bgDue;
-            $hoursLeft = $bgDue ? max(0,(strtotime($bgDue)-time())/3600) : null;
-        ?>
+        <?php else: foreach ($applicants as $ap): ?>
         <div class="border rounded mb-3 overflow-hidden" style="font-size:13px;">
             <div class="p-3" style="background:#f8f8f8;border-bottom:1px solid #eee;">
                 <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
@@ -217,13 +196,6 @@ include '../../../includes/header.php'; include '../../../includes/sidebar.php';
                     <span class="badge bg-<?= $ap['doc_count'] > 0 ? 'primary' : 'secondary' ?>">
                         <i class="fas fa-file me-1"></i><?= $ap['doc_count'] ?> doc(s)
                     </span>
-                    <?php if ($bgDue): ?>
-                        <?php if ($bgReady): ?>
-                        <span class="badge bg-success">Ready for Review</span>
-                        <?php else: ?>
-                        <span class="badge bg-warning text-dark">~<?= round($hoursLeft) ?>h left</span>
-                        <?php endif; ?>
-                    <?php endif; ?>
                 </div>
                 <?php if ($ap['submitted_at']): ?>
                 <div style="font-size:11px;color:#999;margin-top:4px;">

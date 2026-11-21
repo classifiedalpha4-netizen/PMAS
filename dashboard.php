@@ -15,7 +15,7 @@ if ($role === 'admin' || $role === 'staff') {
     $stats['pending_cases']  = $conn->query("SELECT COUNT(*) FROM cases WHERE verdict='Pending'")->fetch_row()[0];
     $stats['adm_pending']    = $conn->query("SELECT COUNT(*) FROM applicants WHERE submission_status IN ('submitted','under_review')")->fetch_row()[0];
     $stats['adm_passed']     = $conn->query("SELECT COUNT(*) FROM applicants WHERE submission_status='passed'")->fetch_row()[0];
-    $stats['adm_bg_ready']   = $conn->query("SELECT COUNT(*) FROM applicants WHERE submission_status='submitted' AND DATE_ADD(bg_check_start, INTERVAL 2 DAY) <= NOW()")->fetch_row()[0];
+    $stats['adm_bg_ready']   = $conn->query("SELECT COUNT(*) FROM applicants WHERE submission_status='submitted'")->fetch_row()[0];
 
     $recentCases = $conn->query("
         SELECT c.*, u.full_name, u.role
@@ -130,7 +130,7 @@ include 'includes/sidebar.php';
                         <?= $stats['adm_bg_ready'] ?>
                     </div>
                     <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">
-                        Ready for Review<?= $stats['adm_bg_ready'] > 0 ? ' ⚠' : '' ?>
+                        Awaiting Review
                     </div>
                 </div>
             </div>

@@ -106,12 +106,7 @@ if (!empty($tn)) {
 
     <?php
     // Determine current stage
-    $status   = $applicant['submission_status'];
-    $bgDue    = !empty($applicant['bg_check_start'])
-                ? date('Y-m-d H:i:s', strtotime($applicant['bg_check_start'] . ' +2 days'))
-                : null;
-    $now      = date('Y-m-d H:i:s');
-    $bgPassed = $bgDue && $now >= $bgDue;
+    $status = $applicant['submission_status'];
     ?>
 
     <!-- STATUS CARD -->
@@ -126,10 +121,9 @@ if (!empty($tn)) {
             <div class="row g-3 mb-4">
                 <div class="col-md-6">
                     <table class="table table-borderless table-sm mb-0" style="font-size:13.5px;">
-                        <tr><td class="text-muted" style="width:45%;">Full Name</td>
-                            <td><strong><?= sanitize($applicant['last_name']) ?>, <?= sanitize($applicant['first_name']) ?> <?= sanitize($applicant['middle_name'] ?? '') ?></strong></td></tr>
+                        <tr><td class="text-muted" style="width:45%;">Username</td>
+                            <td><strong><?= sanitize($applicant['last_name']) ?></strong></td></tr>
                         <tr><td class="text-muted">Batch</td><td><?= sanitize($applicant['batch_name']) ?></td></tr>
-                        <tr><td class="text-muted">Email</td><td><?= sanitize($applicant['email']) ?></td></tr>
                         <tr><td class="text-muted">Submitted</td><td><?= $applicant['submitted_at'] ? date('M d, Y g:i A', strtotime($applicant['submitted_at'])) : '—' ?></td></tr>
                     </table>
                 </div>
@@ -137,12 +131,6 @@ if (!empty($tn)) {
                     <div class="text-center">
                         <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;mb-2;">Application Status</div>
                         <div style="font-size:22px;"><?= getAdmissionStatusBadge($status) ?></div>
-                        <?php if ($status === 'submitted' && !$bgPassed): ?>
-                        <div style="font-size:12px;color:#856404;margin-top:8px;">
-                            <i class="fas fa-hourglass-half me-1"></i>
-                            Background check due: <?= date('M d, Y g:i A', strtotime($bgDue)) ?>
-                        </div>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -151,10 +139,9 @@ if (!empty($tn)) {
             <div class="adm-track-timeline">
                 <?php
                 $stages = [
-                    ['submitted',    'Application Submitted',    'fa-file-alt',    in_array($status, ['submitted','under_review','passed','failed'])],
-                    ['under_review', '2-Day Evaluation Period',  'fa-hourglass-half', in_array($status, ['under_review','passed','failed'])],
-                    ['bg_check',     'Background Check',         'fa-search',      in_array($status, ['under_review','passed','failed'])],
-                    ['result',       'Results Released',         'fa-trophy',      in_array($status, ['passed','failed'])],
+                    ['submitted',    'Application Submitted', 'fa-file-alt',    in_array($status, ['submitted','under_review','passed','failed'])],
+                    ['under_review', 'Under Review',          'fa-search',      in_array($status, ['under_review','passed','failed'])],
+                    ['result',       'Results Released',      'fa-scroll',      in_array($status, ['passed','failed'])],
                 ];
                 foreach ($stages as $s):
                     $done = $s[3];
@@ -174,11 +161,8 @@ if (!empty($tn)) {
             <div class="row g-2 mb-3">
                 <?php
                 $checks = [
-                    ['eval_age_ok',    'Age Requirement (17–22)',         'Min. 17, Max. 22 years old'],
-                    ['eval_height_ok', 'Height Requirement',              'Male ≥162cm / Female ≥157cm'],
-                    ['eval_ee_ok',     'Entrance Exam Passed',            'EE pass confirmed'],
-                    ['eval_gwa_ok',    'GWA Requirement (min. 85)',       'General Weighted Average ≥ 85'],
-                    ['eval_docs_ok',   'Required Documents Uploaded',     'All required documents submitted'],
+                    ['eval_ee_ok',   'Entrance Exam Passed',          'EE pass confirmed'],
+                    ['eval_docs_ok', 'Required Documents Uploaded',   'All required documents submitted'],
                 ];
                 foreach ($checks as [$key, $label, $hint]):
                     $val = $applicant[$key];
@@ -200,7 +184,7 @@ if (!empty($tn)) {
             <?php if ($status === 'passed' || $status === 'failed'): ?>
             <div class="adm-result-banner <?= $status === 'passed' ? 'pass' : 'fail' ?>">
                 <div class="adm-result-icon">
-                    <i class="fas fa-<?= $status === 'passed' ? 'trophy' : 'times-circle' ?>"></i>
+                    <i class="fas fa-<?= $status === 'passed' ? 'scroll' : 'times-circle' ?>"></i>
                 </div>
                 <div>
                     <strong style="font-size:18px;">
@@ -214,10 +198,7 @@ if (!empty($tn)) {
             <?php elseif ($status === 'submitted'): ?>
             <div class="adm-notice info">
                 <i class="fas fa-clock"></i>
-                <div>
-                    Your application is currently in the <strong>2-day evaluation period</strong>. 
-                    Please check back after <strong><?= $bgDue ? date('M d, Y g:i A', strtotime($bgDue)) : '2 days' ?></strong> for results.
-                </div>
+                <div>Your application has been <strong>submitted</strong> and is awaiting review by PMA Administration. You will be notified once a decision has been made.</div>
             </div>
             <?php elseif ($status === 'under_review'): ?>
             <div class="adm-notice warning">
