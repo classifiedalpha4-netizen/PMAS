@@ -292,7 +292,7 @@ CREATE TABLE IF NOT EXISTS bg_check_log (
 
 // ---- SEED admin account (password: Admin@1234) ----
 $adminPw = password_hash('Admin@1234', PASSWORD_BCRYPT);
-$conn->query("INSERT IGNORE INTO users (username,password,role,full_name,rank,unit) VALUES ('admin','$adminPw','admin','System Administrator','Administrator','PMA HQ')");
+$conn->query("INSERT IGNORE INTO users (username,password,role,full_name,`rank`,unit) VALUES ('admin','$adminPw','admin','System Administrator','Administrator','PMA HQ')");
 $results[] = "✓ Admin account seeded (admin / Admin@1234)";
 
 // Seed default admission batch
