@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * PMAS Admission Portal Ã¢â‚¬â€ Public Results Board
  * Shows applicants who PASSED the admission process (released by admin).
