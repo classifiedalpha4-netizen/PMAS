@@ -5,6 +5,7 @@ $pageTitle = 'My Cadet ID Card';
 $uid = $_SESSION['user_id'];
 
 define('CADET_SIG_DIR', __DIR__ . '/../../uploads/cadet_signatures/');
+if (!is_dir(CADET_SIG_DIR)) mkdir(CADET_SIG_DIR, 0755, true);
 
 // Auto-create table if needed
 $conn->query("

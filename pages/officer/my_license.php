@@ -4,6 +4,7 @@ requireRole('officer');
 $pageTitle = 'My Officer License';
 
 define('SIG_UPLOAD_DIR', __DIR__ . '/../../uploads/signatures/');
+if (!is_dir(SIG_UPLOAD_DIR)) mkdir(SIG_UPLOAD_DIR, 0755, true);
 
 // Auto-create tables if needed (MySQL-compatible column checks)
 $_c1 = $conn->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='officer_profiles' AND COLUMN_NAME='certificate_number'");

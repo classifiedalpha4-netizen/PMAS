@@ -20,6 +20,7 @@ $conn->query("
 
 define('CADET_SIG_DIR', __DIR__ . '/../../uploads/cadet_signatures/');
 if (!is_dir(CADET_SIG_DIR)) mkdir(CADET_SIG_DIR, 0755, true);
+if (!is_dir(CADET_SIG_DIR)) mkdir(CADET_SIG_DIR, 0755, true);
 
 // ---- Handle signature save ----
 $sigSuccess = $sigError = '';

@@ -21,6 +21,7 @@ $conn->query("
 ");
 
 define('BL_UPLOAD_DIR', __DIR__ . '/../../uploads/blacklist_evidence/');
+if (!is_dir(BL_UPLOAD_DIR)) mkdir(BL_UPLOAD_DIR, 0755, true);
 define('BL_MAX_SIZE',   25 * 1024 * 1024); // 25 MB
 $allowedExt = ['pdf','jpg','jpeg','png','gif','doc','docx','mp4','mp3','txt'];
 

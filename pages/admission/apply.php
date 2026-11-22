@@ -20,8 +20,11 @@ $error   = '';
 $success = '';
 $trackingNumber = '';
 
-// Upload directory
+// Upload directory — create if it doesn't exist (needed on Railway)
 $uploadDir = __DIR__ . '/../../uploads/admission/';
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0755, true);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])) {
 

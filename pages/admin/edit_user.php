@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $profilePhoto = $user['profile_photo'] ?? 'default.png';
     $photoUploadDir = __DIR__ . '/../../assets/img/profiles/';
     if (!is_dir($photoUploadDir)) mkdir($photoUploadDir, 0755, true);
+    if (!is_dir($photoUploadDir)) mkdir($photoUploadDir, 0755, true);
 
     if (!empty($_FILES['profile_photo']['name']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
         $ext     = strtolower(pathinfo($_FILES['profile_photo']['name'], PATHINFO_EXTENSION));
