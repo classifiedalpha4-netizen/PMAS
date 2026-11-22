@@ -54,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     $suffix         = $discordAge;
     $gender         = 'Male';        // default, not collected
     $dob            = '2000-01-01';  // default placeholder
-    $pob            = '';
+    $pob            = null;
     $civilStatus    = 'Single';
     $nationality    = 'Filipino';
-    $religion       = '';
+    $religion       = null;
     $heightCm       = 0;
     $weightKg       = 0;
-    $bloodType      = '';
+    $bloodType      = null;
     $email          = filter_var($discordUsnId, FILTER_SANITIZE_EMAIL) ?: $discordUsnId;
     $contact        = '';             // contact_number kept empty (profile link stored in school_address)
     $permAddress    = $admissionGrade;
@@ -68,14 +68,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     $schoolName     = $admUsername;   // required DB column
     $schoolAddress  = $profileLink;   // store Roblox profile link here (VARCHAR 200)
     $schoolType     = 'Public';
-    $schoolYear     = '';
+    $schoolYear     = null;
     $gwa            = 0;
     $eePassed       = 1;              // applicant already passed EE
-    $eeScore        = 0;
-    $eeDate         = '';
-    $fatherName     = ''; $fatherOcc  = '';
-    $motherName     = ''; $motherOcc  = '';
-    $guardianName   = ''; $guardianRel= ''; $guardianCon = '';
+    $eeScore        = null;
+    $eeDate         = null;           // NULL — not a date field in this form
+    $fatherName     = null; $fatherOcc  = null;
+    $motherName     = null; $motherOcc  = null;
+    $guardianName   = null; $guardianRel= null; $guardianCon = null;
 
     // Basic validation
     if (empty($admUsername) || empty($discordUsnId) || empty($paRank) || empty($profileLink) || empty($admissionGrade) || empty($unitDept) || empty($robloxAge) || empty($discordAge)) {
@@ -111,9 +111,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
         $evalDocsOk   = 0;  // updated after upload
         $autoEligible = 0;  // updated after upload
 
-        // ---- Insert applicant ----
-        $stmt = $conn->prepare("
-            INSERT INTO applicants
+        // ---- Insert applicant using null-safe direct SQL ----
+        // Convert all nullable values properly
+        $f = function($v, $type = 's') {
+            if ($v === null || $v === '') return 'NULL';
+            if ($type === 'i') return (int)$v;
+            if ($type === 'd') return (float)$v;
+            global $conn;
+            return "'" . $conn->real_escape_string((string)$v) . "'";
+        };
+
+        $sql = "INSERT INTO applicants
             (batch_id, tracking_number, last_name, first_name, middle_name, suffix,
              gender, date_of_birth, place_of_birth, civil_status, nationality, religion,
              height_cm, weight_kg, blood_type, email, contact_number,
@@ -123,28 +131,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
              guardian_name, guardian_relationship, guardian_contact,
              eval_age_ok, eval_height_ok, eval_ee_ok, eval_gwa_ok, eval_docs_ok, auto_eligible,
              submission_status, submitted_at, bg_check_start)
-            VALUES
-            (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-             'submitted', NOW(), NOW())
-        ");
-        $stmt->bind_param(
-            'issssssssssssssssssssssdidssssssssiiiiii',
-            $batchId, $trackNum, $lastName, $firstName, $middleName, $suffix,
-            $gender, $dob, $pob, $civilStatus, $nationality, $religion,
-            $heightCm, $weightKg, $bloodType, $email, $contact,
-            $permAddress, $currAddress, $schoolName, $schoolAddress,
-            $schoolType, $schoolYear, $gwa, $eePassed, $eeScore, $eeDate,
-            $fatherName, $fatherOcc, $motherName, $motherOcc,
-            $guardianName, $guardianRel, $guardianCon,
-            $evalAgeOk, $evalHeightOk, $evalEeOk, $evalGwaOk, $evalDocsOk, $autoEligible
-        );
-        $stmt->execute();
-        $newApplicantId = $stmt->insert_id;
-        $stmt->close();
+            VALUES (
+            {$f($batchId,'i')}, {$f($trackNum)}, {$f($lastName)}, {$f($firstName)}, {$f($middleName)}, {$f($suffix)},
+            {$f($gender)}, {$f($dob)}, {$f($pob)}, {$f($civilStatus)}, {$f($nationality)}, {$f($religion)},
+            {$f($heightCm,'d')}, {$f($weightKg,'d')}, {$f($bloodType)}, {$f($email)}, {$f($contact)},
+            {$f($permAddress)}, {$f($currAddress)}, {$f($schoolName)}, {$f($schoolAddress)},
+            {$f($schoolType)}, {$f($schoolYear)}, {$f($gwa,'d')}, {$f($eePassed,'i')}, {$f($eeScore,'d')}, {$f($eeDate)},
+            {$f($fatherName)}, {$f($fatherOcc)}, {$f($motherName)}, {$f($motherOcc)},
+            {$f($guardianName)}, {$f($guardianRel)}, {$f($guardianCon)},
+            {$f($evalAgeOk,'i')}, {$f($evalHeightOk,'i')}, {$f($evalEeOk,'i')}, {$f($evalGwaOk,'i')}, {$f($evalDocsOk,'i')}, {$f($autoEligible,'i')},
+            'submitted', NOW(), NOW()
+        )";
 
-        // ---- Process document uploads ----
+        $conn->query($sql);
+        if ($conn->errno) {
+            $error = 'Database error: ' . $conn->error;
+        } else {
+            $newApplicantId = $conn->insert_id;
+        }
+
+        // ---- Process document uploads (only if insert succeeded) ----
         $docCount = 0;
-        if (!empty($_FILES['documents']['name'])) {
+        if (!$error && $newApplicantId && !empty($_FILES['documents']['name'])) {
             foreach ($_FILES['documents']['name'] as $reqId => $fileName) {
                 if (!empty($fileName) && $_FILES['documents']['error'][$reqId] === UPLOAD_ERR_OK) {
                     $ext      = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
@@ -181,8 +189,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
             auto_eligible = $autoElig
             WHERE id = $newApplicantId");
 
-        $trackingNumber = $trackNum;
-        $success = "Your application has been submitted successfully!";
+        if (!$error && $newApplicantId) {
+            $trackingNumber = $trackNum;
+            $success = "Your application has been submitted successfully!";
+        }
     }
 }
 ?>
