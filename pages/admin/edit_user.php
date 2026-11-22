@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $conn->prepare("
         UPDATE users
-        SET full_name=?, rank=?, unit=?, email=?, roblox_username=?, is_active=?
+        SET full_name=?, `rank`=?, unit=?, email=?, roblox_username=?, is_active=?
         WHERE id=?
     ");
     $stmt->bind_param('sssssis',

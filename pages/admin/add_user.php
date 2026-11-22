@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Password must be at least 8 characters.';
     } else {
         $hash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $conn->prepare("INSERT INTO users (username,password,role,full_name,rank,unit,email,roblox_username) VALUES (?,?,?,?,?,?,?,?)");
+        $stmt = $conn->prepare("INSERT INTO users (username,password,role,full_name,`rank`,unit,email,roblox_username) VALUES (?,?,?,?,?,?,?,?)");
         $stmt->bind_param('ssssssss', $username, $hash, $role, $full_name, $rank, $unit, $email, $roblox_username);
         $stmt->execute();
         $newId = $stmt->insert_id;
