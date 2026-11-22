@@ -152,7 +152,7 @@ include '../../../includes/header.php'; include '../../../includes/sidebar.php';
                         ['Grade in Admission Result', $applicant['permanent_address']],
                         ['Unit / Department',     $applicant['current_address']],
                         ['Roblox Age',            $applicant['middle_name']],
-                        ['Discord Age',           $applicant['suffix']],
+                        ['Discord Age',           $applicant['place_of_birth']],
                     ];
                     foreach ($fields as [$label, $value]):
                     ?>

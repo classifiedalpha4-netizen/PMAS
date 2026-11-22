@@ -54,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     $lastName       = $admUsername;
     $firstName      = $paRank;
     $middleName     = $robloxAge;
-    $suffix         = $discordAge;
+    $suffix         = '';            // left empty — suffix VARCHAR(10) too short for discord age
     $gender         = 'Male';        // default, not collected
     $dob            = '2000-01-01';  // default placeholder
-    $pob            = null;
+    $pob            = $discordAge;   // store discord age in place_of_birth (VARCHAR 100)
     $civilStatus    = 'Single';
     $nationality    = 'Filipino';
     $religion       = null;
