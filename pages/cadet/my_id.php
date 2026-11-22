@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once '../../includes/config.php';
 requireRole('cadet');
 $pageTitle = 'My Cadet ID Card';

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * PMAS Admission Portal â€” Applicant Application Form
  * Public-facing page, no login required.

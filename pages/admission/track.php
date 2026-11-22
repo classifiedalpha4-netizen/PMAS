@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * PMAS Admission Portal â€” Application Tracking
  * Public-facing. Applicant enters their tracking number to check status.
