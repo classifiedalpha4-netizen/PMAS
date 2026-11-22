@@ -1,4 +1,7 @@
 <?php
+// Start output buffering immediately to prevent "headers already sent" errors
+if (!ob_get_level()) ob_start();
+
 // ============================================================
 // Database Configuration
 // Railway provides env vars: MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT
