@@ -14,7 +14,7 @@ $passedList = [];
 if ($filterBatch) {
     $passedList = $conn->query("
         SELECT a.last_name, a.first_name, a.middle_name, a.suffix,
-               a.email, a.contact_number, a.permanent_address, a.current_address,
+               a.email, a.school_address, a.permanent_address, a.current_address,
                a.tracking_number, a.result_released_at, a.review_notes
         FROM applicants a
         WHERE a.batch_id = $filterBatch
@@ -162,8 +162,8 @@ foreach ($batches as $b) {
                         <td><?= sanitize($p['first_name']) ?></td>
                         <td><?= sanitize($p['email']) ?></td>
                         <td>
-                            <?php if ($p['contact_number']): ?>
-                            <a href="<?= sanitize($p['contact_number']) ?>" target="_blank" rel="noopener" style="font-size:12px;">
+                            <?php if ($p['school_address']): ?>
+                            <a href="<?= sanitize($p['school_address']) ?>" target="_blank" rel="noopener" style="font-size:12px;">
                                 <i class="fas fa-external-link-alt me-1"></i>View Profile
                             </a>
                             <?php else: ?>—<?php endif; ?>

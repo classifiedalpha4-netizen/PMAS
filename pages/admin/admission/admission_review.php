@@ -148,7 +148,7 @@ include '../../../includes/header.php'; include '../../../includes/sidebar.php';
                         ['Username',              $applicant['last_name']],
                         ['PA Rank',               $applicant['first_name']],
                         ['Discord Username & ID', $applicant['email']],
-                        ['Profile Link (Roblox)', $applicant['contact_number']],
+                        ['Profile Link (Roblox)', $applicant['school_address']],
                         ['Grade in Admission Result', $applicant['permanent_address']],
                         ['Unit / Department',     $applicant['current_address']],
                         ['Roblox Age',            $applicant['middle_name']],

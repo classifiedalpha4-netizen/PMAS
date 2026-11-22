@@ -62,11 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     $weightKg       = 0;
     $bloodType      = '';
     $email          = filter_var($discordUsnId, FILTER_SANITIZE_EMAIL) ?: $discordUsnId;
-    $contact        = $profileLink;
+    $contact        = '';             // contact_number kept empty (profile link stored in school_address)
     $permAddress    = $admissionGrade;
     $currAddress    = $unitDept;
     $schoolName     = $admUsername;   // required DB column
-    $schoolAddress  = '';
+    $schoolAddress  = $profileLink;   // store Roblox profile link here (VARCHAR 200)
     $schoolType     = 'Public';
     $schoolYear     = '';
     $gwa            = 0;

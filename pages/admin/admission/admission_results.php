@@ -23,7 +23,7 @@ $pendingList= [];
 
 if ($filterBatch) {
     $passedList  = $conn->query("SELECT a.id, a.tracking_number, a.last_name, a.first_name,
-                                        a.email, a.contact_number, a.permanent_address, a.current_address,
+                                        a.email, a.school_address, a.permanent_address, a.current_address,
                                         a.middle_name, a.suffix, a.result_released_at, a.review_notes
                                  FROM applicants a WHERE a.batch_id=$filterBatch AND a.submission_status='passed' ORDER BY a.last_name")->fetch_all(MYSQLI_ASSOC);
     $failedList  = $conn->query("SELECT a.id, a.tracking_number, a.last_name, a.first_name,
