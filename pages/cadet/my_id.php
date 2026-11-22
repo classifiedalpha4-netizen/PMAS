@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../../includes/config.php';
 requireRole('cadet');
 $pageTitle = 'My Cadet ID Card';
@@ -59,11 +59,11 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
         <div class="cadet-id-card mb-3" style="margin:0 auto;">
             <!-- Watermark -->
             <div class="cadet-card-logo-watermark">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="">
             </div>
             <div class="cadet-card-stripe"></div>
             <div class="cadet-card-header">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA"
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA"
                      style="width:30px;height:30px;border-radius:50%;border:1px solid var(--pmas-gold);object-fit:cover;flex-shrink:0;">
                 <div>
                     <div class="title">Philippine Military Academy</div>
@@ -87,9 +87,9 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                     <div class="c-num"><?= sanitize($cadet['rank'] ?? 'Cadet') ?></div>
                     <div class="c-row"><span>Cadet ID</span><span><?= sanitize($cadet['cadet_id']) ?></span></div>
                     <div class="c-row"><span>Roblox Username</span><span><?= sanitize($cadet['roblox_username'] ?? $cadet['username']) ?></span></div>
-                    <div class="c-row"><span>Company</span><span><?= sanitize($cadet['company'] ?? '—') ?></span></div>
-                    <div class="c-row"><span>Battalion</span><span><?= sanitize($cadet['battalion'] ?? '—') ?></span></div>
-                    <div class="c-row"><span>Class</span><span><?= sanitize($cadet['class_year'] ?? '—') ?></span></div>
+                    <div class="c-row"><span>Company</span><span><?= sanitize($cadet['company'] ?? 'â€”') ?></span></div>
+                    <div class="c-row"><span>Battalion</span><span><?= sanitize($cadet['battalion'] ?? 'â€”') ?></span></div>
+                    <div class="c-row"><span>Class</span><span><?= sanitize($cadet['class_year'] ?? 'â€”') ?></span></div>
                     <div class="c-row"><span>Status</span><span><?= getStatusBadge($cadet['cadet_status']) ?></span></div>
                 </div>
             </div>
@@ -149,19 +149,19 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">Company</td>
-                        <td><?= sanitize($cadet['company'] ?? '—') ?></td>
+                        <td><?= sanitize($cadet['company'] ?? 'â€”') ?></td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">Battalion</td>
-                        <td><?= sanitize($cadet['battalion'] ?? '—') ?></td>
+                        <td><?= sanitize($cadet['battalion'] ?? 'â€”') ?></td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">Class Year</td>
-                        <td><?= sanitize($cadet['class_year'] ?? '—') ?></td>
+                        <td><?= sanitize($cadet['class_year'] ?? 'â€”') ?></td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">Date Enrolled</td>
-                        <td><?= $cadet['date_enrolled'] ? date('F j, Y', strtotime($cadet['date_enrolled'])) : '—' ?></td>
+                        <td><?= $cadet['date_enrolled'] ? date('F j, Y', strtotime($cadet['date_enrolled'])) : 'â€”' ?></td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">Status</td>

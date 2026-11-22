@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 /**
- * PMAS Admission Portal — Application Tracking
+ * PMAS Admission Portal â€” Application Tracking
  * Public-facing. Applicant enters their tracking number to check status.
  */
 require_once '../../includes/config.php';
@@ -47,7 +47,7 @@ if (!empty($tn)) {
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="<?= BASE_URL ?>index.php">
             <div class="pmas-logo-circle">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA Logo">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA Logo">
             </div>
             <div>
                 <div class="pmas-brand-title">PMAS Portal</div>
@@ -114,7 +114,7 @@ if (!empty($tn)) {
         <div class="adm-section-header">
             <i class="fas fa-id-card"></i>
             <?= sanitize($applicant['last_name']) ?>, <?= sanitize($applicant['first_name']) ?>
-            &nbsp;—&nbsp; <?= sanitize($applicant['tracking_number']) ?>
+            &nbsp;â€”&nbsp; <?= sanitize($applicant['tracking_number']) ?>
         </div>
         <div class="adm-section-body">
 
@@ -124,7 +124,7 @@ if (!empty($tn)) {
                         <tr><td class="text-muted" style="width:45%;">Username</td>
                             <td><strong><?= sanitize($applicant['last_name']) ?></strong></td></tr>
                         <tr><td class="text-muted">Batch</td><td><?= sanitize($applicant['batch_name']) ?></td></tr>
-                        <tr><td class="text-muted">Submitted</td><td><?= $applicant['submitted_at'] ? date('M d, Y g:i A', strtotime($applicant['submitted_at'])) : '—' ?></td></tr>
+                        <tr><td class="text-muted">Submitted</td><td><?= $applicant['submitted_at'] ? date('M d, Y g:i A', strtotime($applicant['submitted_at'])) : 'â€”' ?></td></tr>
                     </table>
                 </div>
                 <div class="col-md-6 d-flex align-items-center justify-content-center">

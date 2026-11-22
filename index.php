@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once 'includes/config.php';
 
 // Redirect if already logged in
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Logo -->
         <div class="pmas-login-logo">
             <div class="emblem">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA Logo">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA Logo">
             </div>
             <h1>PMAS Portal</h1>
             <p>Philippine Military Academy System</p>

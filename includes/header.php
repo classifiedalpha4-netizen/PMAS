@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +25,7 @@
 
         <a class="navbar-brand d-flex align-items-center gap-2" href="<?= BASE_URL ?>dashboard.php">
             <div class="pmas-logo-circle">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA Logo">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA Logo">
             </div>
             <div>
                 <div class="pmas-brand-title">PMAS Portal</div>
