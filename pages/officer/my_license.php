@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../../includes/config.php';
 requireRole('officer');
 $pageTitle = 'My Officer License';
@@ -63,7 +63,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
 <?php
 $licNum  = $officer['license_number']      ?: generateLicenseNumber($conn, $uid);
 $certNum = $officer['certificate_number']   ?: ('PMA-CERT-' . date('Y') . '-' . str_pad($uid, 4, '0', STR_PAD_LEFT));
-$transNum= $officer['transition_number']    ?? 'â€”';
+$transNum= $officer['transition_number']    ?? 'Ã¢â‚¬â€';
 ?>
 
 <div class="row justify-content-center">
@@ -72,12 +72,12 @@ $transNum= $officer['transition_number']    ?? 'â€”';
         <div class="officer-license-card mb-3">
             <!-- PMA watermark -->
             <div class="officer-card-logo-watermark">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="">
             </div>
             <!-- Header -->
             <div class="officer-card-header">
                 <div class="pma-emblem">
-                    <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA">
+                    <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA">
                 </div>
                 <div class="header-text">
                     <div class="title">Philippine Military Academy</div>
@@ -105,7 +105,7 @@ $transNum= $officer['transition_number']    ?? 'â€”';
                     <div class="c-rank"><?= sanitize($officer['rank'] ?? 'Officer') ?></div>
                     <div class="c-row"><span>Officer ID</span><span><?= sanitize($officer['officer_id']) ?></span></div>
                     <div class="c-row"><span>Roblox Username</span><span><?= sanitize($officer['roblox_username'] ?? $officer['username']) ?></span></div>
-                    <div class="c-row"><span>Rank</span><span><?= sanitize($officer['rank'] ?? 'â€”') ?></span></div>
+                    <div class="c-row"><span>Rank</span><span><?= sanitize($officer['rank'] ?? 'Ã¢â‚¬â€') ?></span></div>
                     <div class="c-row"><span>Cert. No.</span><span><?= sanitize($certNum) ?></span></div>
                     <div class="c-row"><span>Lic. No.</span><span><?= sanitize($licNum) ?></span></div>
                     <div class="c-row"><span>Trans. No.</span><span><?= sanitize($transNum) ?></span></div>
@@ -165,7 +165,7 @@ $transNum= $officer['transition_number']    ?? 'â€”';
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">Rank</td>
-                        <td><?= sanitize($officer['rank'] ?? 'â€”') ?></td>
+                        <td><?= sanitize($officer['rank'] ?? 'Ã¢â‚¬â€') ?></td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">Certificate No.</td>
@@ -181,11 +181,11 @@ $transNum= $officer['transition_number']    ?? 'â€”';
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">License Issued</td>
-                        <td><?= $officer['license_issued'] ? date('F j, Y', strtotime($officer['license_issued'])) : 'â€”' ?></td>
+                        <td><?= $officer['license_issued'] ? date('F j, Y', strtotime($officer['license_issued'])) : 'Ã¢â‚¬â€' ?></td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">License Expiry</td>
-                        <td><?= $officer['license_expiry'] ? date('F j, Y', strtotime($officer['license_expiry'])) : 'â€”' ?></td>
+                        <td><?= $officer['license_expiry'] ? date('F j, Y', strtotime($officer['license_expiry'])) : 'Ã¢â‚¬â€' ?></td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-muted">License Status</td>

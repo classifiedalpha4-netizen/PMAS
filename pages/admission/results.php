@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 /**
- * PMAS Admission Portal â€” Public Results Board
+ * PMAS Admission Portal Ã¢â‚¬â€ Public Results Board
  * Shows applicants who PASSED the admission process (released by admin).
  */
 require_once '../../includes/config.php';
@@ -47,7 +47,7 @@ foreach ($batches as $b) {
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="<?= BASE_URL ?>index.php">
             <div class="pmas-logo-circle">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA Logo">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA Logo">
             </div>
             <div>
                 <div class="pmas-brand-title">PMAS Portal</div>
@@ -73,7 +73,7 @@ foreach ($batches as $b) {
 
 <div class="admission-hero">
     <div class="container text-center">
-        <!-- Admission results icon â€” scroll/proclamation style -->
+        <!-- Admission results icon Ã¢â‚¬â€ scroll/proclamation style -->
         <div class="adm-results-emblem">
             <i class="fas fa-scroll"></i>
         </div>
@@ -121,10 +121,10 @@ foreach ($batches as $b) {
     <div class="adm-results-header">
         <i class="fas fa-scroll"></i>
         <div>
-            <strong style="font-size:18px;">OFFICIAL RESULTS â€” <?= strtoupper(sanitize($currentBatch['batch_name'] ?? '')) ?></strong>
+            <strong style="font-size:18px;">OFFICIAL RESULTS Ã¢â‚¬â€ <?= strtoupper(sanitize($currentBatch['batch_name'] ?? '')) ?></strong>
             <div style="font-size:12px;opacity:0.75;margin-top:4px;">
                 <i class="fas fa-calendar me-1"></i>
-                Results released: <?= $passedList[0]['result_released_at'] ? date('F j, Y', strtotime($passedList[0]['result_released_at'])) : 'â€”' ?>
+                Results released: <?= $passedList[0]['result_released_at'] ? date('F j, Y', strtotime($passedList[0]['result_released_at'])) : 'Ã¢â‚¬â€' ?>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <i class="fas fa-users me-1"></i>
                 <?= count($passedList) ?> applicant(s) passed
@@ -166,7 +166,7 @@ foreach ($batches as $b) {
                             <a href="<?= sanitize($p['school_address']) ?>" target="_blank" rel="noopener" style="font-size:12px;">
                                 <i class="fas fa-external-link-alt me-1"></i>View Profile
                             </a>
-                            <?php else: ?>â€”<?php endif; ?>
+                            <?php else: ?>Ã¢â‚¬â€<?php endif; ?>
                         </td>
                         <td><?= sanitize($p['permanent_address']) ?></td>
                         <td><?= sanitize($p['current_address']) ?></td>

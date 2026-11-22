@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 /**
- * PMAS Admission Portal â€” Applicant Application Form
+ * PMAS Admission Portal Ã¢â‚¬â€ Applicant Application Form
  * Public-facing page, no login required.
  * Applicants who have PASSED the Entrance Examination submit here.
  */
@@ -20,7 +20,7 @@ $error   = '';
 $success = '';
 $trackingNumber = '';
 
-// Upload directory â€” create if it doesn't exist (needed on Railway)
+// Upload directory Ã¢â‚¬â€ create if it doesn't exist (needed on Railway)
 $uploadDir = __DIR__ . '/../../uploads/admission/';
 if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0755, true);
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     $discordAge     = sanitize($_POST['discord_age'] ?? '');
 
     // Map new fields onto existing DB columns (reuse nullable columns)
-    // last_name  â†’ admUsername   first_name â†’ paRank    email â†’ discordUsnId (stored separately via permanent_address)
+    // last_name  Ã¢â€ â€™ admUsername   first_name Ã¢â€ â€™ paRank    email Ã¢â€ â€™ discordUsnId (stored separately via permanent_address)
     // We store all new fields in the notes columns available:
     //   last_name        = admUsername
     //   first_name       = paRank
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     //   contact_number   = profileLink
     //   permanent_address= admissionGrade
     //   current_address  = unitDept
-    // school_name required by DB NOT NULL â€” set to admUsername as placeholder
+    // school_name required by DB NOT NULL Ã¢â‚¬â€ set to admUsername as placeholder
     $lastName       = $admUsername;
     $firstName      = $paRank;
     $middleName     = $robloxAge;
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     $gwa            = 0;
     $eePassed       = 1;              // applicant already passed EE
     $eeScore        = null;
-    $eeDate         = null;           // NULL â€” not a date field in this form
+    $eeDate         = null;           // NULL Ã¢â‚¬â€ not a date field in this form
     $fatherName     = null; $fatherOcc  = null;
     $motherName     = null; $motherOcc  = null;
     $guardianName   = null; $guardianRel= null; $guardianCon = null;
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
             'eval_docs_ok'  => 0,
         ];
         $evalFlags = evaluateApplicant($applicantData);
-        // Override: age/height/gwa not applicable for this form â€” set to 1 to not block
+        // Override: age/height/gwa not applicable for this form Ã¢â‚¬â€ set to 1 to not block
         $evalFlags['eval_age_ok']    = 1;
         $evalFlags['eval_height_ok'] = 1;
         $evalFlags['eval_gwa_ok']    = 1;
@@ -218,11 +218,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="<?= BASE_URL ?>index.php">
             <div class="pmas-logo-circle">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA Logo">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA Logo">
             </div>
             <div>
                 <div class="pmas-brand-title">PMAS Portal</div>
-                <div class="pmas-brand-sub">Cadetship Admission â€” Philippine Army Roleplay</div>
+                <div class="pmas-brand-sub">Cadetship Admission Ã¢â‚¬â€ Philippine Army Roleplay</div>
             </div>
         </a>
         <div class="ms-auto d-flex gap-1 flex-shrink-0">
@@ -245,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
 <div class="admission-hero">
     <div class="container text-center">
         <div class="adm-emblem">
-            <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA Logo">
+            <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA Logo">
         </div>
         <h1 class="adm-title">Cadetship Admission Application</h1>
         <p class="adm-subtitle">Philippine Military Academy &mdash; Philippine Army Roleplay</p>

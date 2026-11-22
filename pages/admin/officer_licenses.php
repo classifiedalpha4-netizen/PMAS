@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../../includes/config.php';
 requireRole('admin','staff');
 $pageTitle = 'Officer License Cards';
@@ -148,12 +148,12 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
         <div class="officer-license-card mb-3">
             <!-- PMA watermark -->
             <div class="officer-card-logo-watermark">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="">
             </div>
             <!-- Header -->
             <div class="officer-card-header">
                 <div class="pma-emblem">
-                    <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA">
+                    <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA">
                 </div>
                 <div class="header-text">
                     <div class="title">Philippine Military Academy</div>
@@ -181,10 +181,10 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                     <div class="c-rank"><?= sanitize($officer['rank'] ?? 'Officer') ?></div>
                     <div class="c-row"><span>Officer ID</span><span><?= sanitize($officer['officer_id']) ?></span></div>
                     <div class="c-row"><span>Roblox Username</span><span><?= sanitize($officer['roblox_username'] ?? $officer['username']) ?></span></div>
-                    <div class="c-row"><span>Rank</span><span><?= sanitize($officer['rank'] ?? 'â€”') ?></span></div>
+                    <div class="c-row"><span>Rank</span><span><?= sanitize($officer['rank'] ?? 'Ã¢â‚¬â€') ?></span></div>
                     <div class="c-row"><span>Cert. No.</span><span><?= sanitize($certNum) ?></span></div>
                     <div class="c-row"><span>Lic. No.</span><span><?= sanitize($licNum) ?></span></div>
-                    <div class="c-row"><span>Trans. No.</span><span><?= sanitize($officer['transition_number'] ?? 'â€”') ?></span></div>
+                    <div class="c-row"><span>Trans. No.</span><span><?= sanitize($officer['transition_number'] ?? 'Ã¢â‚¬â€') ?></span></div>
                 </div>
             </div>
 
@@ -265,7 +265,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                         <div class="mb-2 p-2 rounded" style="background:#1a1a1a;">
                             <img src="<?= BASE_URL ?>uploads/signatures/<?= urlencode($editSig['signature_image']) ?>"
                                  style="max-height:50px;filter:brightness(0) invert(1);" alt="Current signature">
-                            <div style="font-size:11px;color:#888;margin-top:4px;">Current signature â€” upload a new one to replace</div>
+                            <div style="font-size:11px;color:#888;margin-top:4px;">Current signature Ã¢â‚¬â€ upload a new one to replace</div>
                         </div>
                         <?php endif; ?>
                         <input type="file" name="signature_image" class="form-control"
@@ -363,12 +363,12 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
     <div class="officer-license-card" style="width:100%;">
         <!-- PMA watermark -->
         <div class="officer-card-logo-watermark">
-            <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="">
+            <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="">
         </div>
         <!-- Header -->
         <div class="officer-card-header">
             <div class="pma-emblem">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA">
             </div>
             <div class="header-text">
                 <div class="title">Philippine Military Academy</div>
@@ -393,10 +393,10 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                 <div class="c-rank"><?= sanitize($o['rank'] ?? 'Officer') ?></div>
                 <div class="c-row"><span>Officer ID</span><span><?= sanitize($o['officer_id']) ?></span></div>
                 <div class="c-row"><span>Roblox Username</span><span><?= sanitize($o['roblox_username'] ?? $o['username']) ?></span></div>
-                <div class="c-row"><span>Rank</span><span><?= sanitize($o['rank'] ?? 'â€”') ?></span></div>
+                <div class="c-row"><span>Rank</span><span><?= sanitize($o['rank'] ?? 'Ã¢â‚¬â€') ?></span></div>
                 <div class="c-row"><span>Cert. No.</span><span><?= sanitize($certNum) ?></span></div>
                 <div class="c-row"><span>Lic. No.</span><span><?= sanitize($licNum) ?></span></div>
-                <div class="c-row"><span>Trans. No.</span><span><?= sanitize($o['transition_number'] ?? 'â€”') ?></span></div>
+                <div class="c-row"><span>Trans. No.</span><span><?= sanitize($o['transition_number'] ?? 'Ã¢â‚¬â€') ?></span></div>
             </div>
         </div>
         <!-- Signatures (mini preview) -->

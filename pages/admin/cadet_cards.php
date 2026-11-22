@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../../includes/config.php';
 requireRole('admin','staff');
 $pageTitle = 'Cadet ID Cards';
@@ -125,11 +125,11 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
         <div class="cadet-id-card mb-3">
             <!-- Watermark -->
             <div class="cadet-card-logo-watermark">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="">
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="">
             </div>
             <div class="cadet-card-stripe"></div>
             <div class="cadet-card-header">
-                <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA"
+                <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA"
                      style="width:30px;height:30px;border-radius:50%;border:1px solid var(--pmas-gold);object-fit:cover;flex-shrink:0;">
                 <div>
                     <div class="title">Philippine Military Academy</div>
@@ -153,9 +153,9 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                     <div class="c-num"><?= sanitize($cadet['rank'] ?? 'Cadet') ?></div>
                     <div class="c-row"><span>Cadet ID</span><span><?= sanitize($cadet['cadet_id']) ?></span></div>
                     <div class="c-row"><span>Roblox Username</span><span><?= sanitize($cadet['roblox_username'] ?? $cadet['username']) ?></span></div>
-                    <div class="c-row"><span>Company</span><span><?= sanitize($cadet['company'] ?? 'â€”') ?></span></div>
-                    <div class="c-row"><span>Battalion</span><span><?= sanitize($cadet['battalion'] ?? 'â€”') ?></span></div>
-                    <div class="c-row"><span>Class</span><span><?= sanitize($cadet['class_year'] ?? 'â€”') ?></span></div>
+                    <div class="c-row"><span>Company</span><span><?= sanitize($cadet['company'] ?? 'Ã¢â‚¬â€') ?></span></div>
+                    <div class="c-row"><span>Battalion</span><span><?= sanitize($cadet['battalion'] ?? 'Ã¢â‚¬â€') ?></span></div>
+                    <div class="c-row"><span>Class</span><span><?= sanitize($cadet['class_year'] ?? 'Ã¢â‚¬â€') ?></span></div>
                     <div class="c-row"><span>Status</span><span><?= getStatusBadge($cadet['status']) ?></span></div>
                 </div>
             </div>
@@ -230,7 +230,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                         <div class="mb-2 p-2 rounded" style="background:#1a1a1a;">
                             <img src="<?= BASE_URL ?>uploads/cadet_signatures/<?= urlencode($editSig['signature_image']) ?>"
                                  style="max-height:50px;filter:brightness(0) invert(1);" alt="Current">
-                            <div style="font-size:11px;color:#888;margin-top:4px;">Current â€” upload new to replace</div>
+                            <div style="font-size:11px;color:#888;margin-top:4px;">Current Ã¢â‚¬â€ upload new to replace</div>
                         </div>
                         <?php endif; ?>
                         <input type="file" name="signature_image" class="form-control"
@@ -325,11 +325,11 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
     <div class="cadet-id-card" style="width:100%;">
         <!-- Watermark -->
         <div class="cadet-card-logo-watermark">
-            <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="">
+            <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="">
         </div>
         <div class="cadet-card-stripe"></div>
         <div class="cadet-card-header">
-            <img src="<?= BASE_URL ?>assets/img/pma_logo.php" alt="PMA"
+            <img src="<?= BASE_URL ?>assets/img/pma_logo.png" alt="PMA"
                  style="width:26px;height:26px;border-radius:50%;border:1px solid var(--pmas-gold);object-fit:cover;flex-shrink:0;">
             <div>
                 <div class="title">Philippine Military Academy</div>
@@ -353,8 +353,8 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                 <div class="c-num"><?= sanitize($c['rank'] ?? 'Cadet') ?></div>
                 <div class="c-row"><span>Cadet ID</span><span><?= sanitize($c['cadet_id']) ?></span></div>
                 <div class="c-row"><span>Roblox Username</span><span><?= sanitize($c['roblox_username'] ?? $c['username']) ?></span></div>
-                <div class="c-row"><span>Company</span><span><?= sanitize($c['company'] ?? 'â€”') ?></span></div>
-                <div class="c-row"><span>Class</span><span><?= sanitize($c['class_year'] ?? 'â€”') ?></span></div>
+                <div class="c-row"><span>Company</span><span><?= sanitize($c['company'] ?? 'Ã¢â‚¬â€') ?></span></div>
+                <div class="c-row"><span>Class</span><span><?= sanitize($c['class_year'] ?? 'Ã¢â‚¬â€') ?></span></div>
                 <div class="c-row"><span>Status</span><span><?= getStatusBadge($c['status']) ?></span></div>
             </div>
         </div>
