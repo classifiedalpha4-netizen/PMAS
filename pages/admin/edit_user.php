@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../../includes/config.php';
 requireRole('admin');
 $pageTitle = 'Edit User';
@@ -9,37 +9,40 @@ if (!$userId) redirect(BASE_URL . 'pages/admin/users.php');
 $user = $conn->query("SELECT * FROM users WHERE id=$userId")->fetch_assoc();
 if (!$user) redirect(BASE_URL . 'pages/admin/users.php');
 
-// Fetch sub-profiles
 $cadetProfile   = $conn->query("SELECT * FROM cadet_profiles  WHERE user_id=$userId")->fetch_assoc();
 $officerProfile = $conn->query("SELECT * FROM officer_profiles WHERE user_id=$userId")->fetch_assoc();
+
+// Helper: escape string for direct SQL, returns NULL literal for empty values
+function esc($conn, $val) {
+    return (!empty($val)) ? "'" . $conn->real_escape_string($val) . "'" : 'NULL';
+}
+// Always escape (never NULL) — for required string fields
+function escStr($conn, $val) {
+    return "'" . $conn->real_escape_string($val) . "'";
+}
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // ---- Profile photo upload ----
-    $profilePhoto = $user['profile_photo'] ?? 'default.png';
+    $profilePhoto   = $user['profile_photo'] ?? 'default.png';
     $photoUploadDir = __DIR__ . '/../../assets/img/profiles/';
-    if (!is_dir($photoUploadDir)) mkdir($photoUploadDir, 0755, true);
     if (!is_dir($photoUploadDir)) mkdir($photoUploadDir, 0755, true);
 
     if (!empty($_FILES['profile_photo']['name']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
         $ext     = strtolower(pathinfo($_FILES['profile_photo']['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg','jpeg','png','gif','webp'];
-        $maxSize = 5 * 1024 * 1024; // 5MB
         if (!in_array($ext, $allowed)) {
             $error = 'Profile photo must be JPG, PNG, GIF, or WEBP.';
-        } elseif ($_FILES['profile_photo']['size'] > $maxSize) {
+        } elseif ($_FILES['profile_photo']['size'] > 5 * 1024 * 1024) {
             $error = 'Profile photo must be under 5MB.';
         } else {
             $safeName = 'user_' . $userId . '_' . time() . '.' . $ext;
             if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $photoUploadDir . $safeName)) {
-                // Delete old photo if not default
                 if ($profilePhoto && $profilePhoto !== 'default.png' && file_exists($photoUploadDir . $profilePhoto)) {
                     unlink($photoUploadDir . $profilePhoto);
                 }
-                $profilePhoto = $safeName;
-                // Update profile_photo in users table
-                $conn->query("UPDATE users SET profile_photo='$safeName' WHERE id=$userId");
+                $conn->query("UPDATE users SET profile_photo='" . $conn->real_escape_string($safeName) . "' WHERE id=$userId");
             }
         }
     }
@@ -52,96 +55,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $roblox_username = sanitize($_POST['roblox_username'] ?? '');
     $is_active       = isset($_POST['is_active']) ? 1 : 0;
 
-    $stmt = $conn->prepare("
-        UPDATE users
-        SET full_name=?, `rank`=?, unit=?, email=?, roblox_username=?, is_active=?
-        WHERE id=?
-    ");
-    $stmt->bind_param('sssssis',
-        $full_name, $rank, $unit, $email, $roblox_username, $is_active, $userId
-    );
+    $stmt = $conn->prepare("UPDATE users SET full_name=?, `rank`=?, unit=?, email=?, roblox_username=?, is_active=? WHERE id=?");
+    $stmt->bind_param('sssssis', $full_name, $rank, $unit, $email, $roblox_username, $is_active, $userId);
     $stmt->execute(); $stmt->close();
 
-    // ---- Cadet profile ----
+    // ---- Cadet profile (null-safe SQL for date columns) ----
     if ($user['role'] === 'cadet') {
-        $cadetId   = sanitize($_POST['cadet_id']     ?? '');
-        $classYear = sanitize($_POST['class_year']   ?? '');
-        $company   = sanitize($_POST['company']      ?? '');
-        $battalion = sanitize($_POST['battalion']    ?? '');
-        $enrolled  = sanitize($_POST['date_enrolled']?? '');
-        $cStatus   = sanitize($_POST['cadet_status'] ?? 'active');
+        $cadetId   = sanitize($_POST['cadet_id']      ?? '');
+        $classYear = sanitize($_POST['class_year']    ?? '');
+        $company   = sanitize($_POST['company']       ?? '');
+        $battalion = sanitize($_POST['battalion']     ?? '');
+        $enrolled  = sanitize($_POST['date_enrolled'] ?? '');
+        $cStatus   = sanitize($_POST['cadet_status']  ?? 'active');
+
+        $cadetIdSql  = escStr($conn, $cadetId);
+        $classYrSql  = esc($conn, $classYear);
+        $companySql  = esc($conn, $company);
+        $battnSql    = esc($conn, $battalion);
+        $enrolledSql = esc($conn, $enrolled);
+        $statusSql   = escStr($conn, $cStatus);
 
         if ($cadetProfile) {
-            // UPDATE existing
-            $ps = $conn->prepare("
-                UPDATE cadet_profiles
-                SET cadet_id=?, class_year=?, company=?, battalion=?,
-                    date_enrolled=?, status=?
-                WHERE user_id=?
-            ");
-            $ps->bind_param('ssssssi',
-                $cadetId, $classYear, $company, $battalion,
-                $enrolled, $cStatus, $userId
-            );
-            $ps->execute(); $ps->close();
+            $conn->query("UPDATE cadet_profiles SET cadet_id=$cadetIdSql, class_year=$classYrSql, company=$companySql, battalion=$battnSql, date_enrolled=$enrolledSql, status=$statusSql WHERE user_id=$userId");
         } else {
-            // INSERT if profile doesn't exist yet
-            $ps = $conn->prepare("
-                INSERT INTO cadet_profiles
-                    (user_id, cadet_id, class_year, company, battalion, date_enrolled, status)
-                VALUES (?,?,?,?,?,?,?)
-            ");
-            $ps->bind_param('issssss',
-                $userId, $cadetId, $classYear, $company, $battalion, $enrolled, $cStatus
-            );
-            $ps->execute(); $ps->close();
+            $conn->query("INSERT INTO cadet_profiles (user_id,cadet_id,class_year,company,battalion,date_enrolled,status) VALUES ($userId,$cadetIdSql,$classYrSql,$companySql,$battnSql,$enrolledSql,$statusSql)");
         }
     }
 
-    // ---- Officer profile ----
+    // ---- Officer profile (null-safe SQL for date columns) ----
     if ($user['role'] === 'officer') {
-        $classYear   = sanitize($_POST['class_year']        ?? '');
-        $branch      = sanitize($_POST['branch_of_service'] ?? '');
-        $assignment  = sanitize($_POST['current_assignment']?? '');
-        $officerId   = sanitize($_POST['officer_id']        ?? '');
-        $licNum      = sanitize($_POST['license_number']    ?? '');
-        $certNum     = sanitize($_POST['certificate_number']?? '');
-        $transNum    = sanitize($_POST['transition_number'] ?? '');
-        $licIssued   = sanitize($_POST['license_issued']    ?? '');
-        $licExpiry   = sanitize($_POST['license_expiry']    ?? '');
-        $licStatus   = sanitize($_POST['license_status']    ?? 'valid');
+        $officerId  = sanitize($_POST['officer_id']          ?? '');
+        $classYear  = sanitize($_POST['class_year']          ?? '');
+        $branch     = sanitize($_POST['branch_of_service']   ?? '');
+        $assignment = sanitize($_POST['current_assignment']  ?? '');
+        $licNum     = sanitize($_POST['license_number']      ?? '');
+        $certNum    = sanitize($_POST['certificate_number']  ?? '');
+        $transNum   = sanitize($_POST['transition_number']   ?? '');
+        $licIssued  = sanitize($_POST['license_issued']      ?? '');
+        $licExpiry  = sanitize($_POST['license_expiry']      ?? '');
+        $licStatus  = sanitize($_POST['license_status']      ?? 'valid');
+
+        $officerIdSql = escStr($conn, $officerId);
+        $classYrSql   = esc($conn, $classYear);
+        $branchSql    = esc($conn, $branch);
+        $assignSql    = esc($conn, $assignment);
+        $licNumSql    = esc($conn, $licNum);
+        $certNumSql   = esc($conn, $certNum);
+        $transNumSql  = esc($conn, $transNum);
+        $licIssuedSql = esc($conn, $licIssued);
+        $licExpirySql = esc($conn, $licExpiry);
+        $licStatusSql = escStr($conn, $licStatus);
 
         if ($officerProfile) {
-            // UPDATE existing
-            $ps = $conn->prepare("
-                UPDATE officer_profiles
-                SET officer_id=?, class_year=?, branch_of_service=?,
-                    current_assignment=?, license_number=?,
-                    certificate_number=?, transition_number=?,
-                    license_issued=?, license_expiry=?, license_status=?
-                WHERE user_id=?
-            ");
-            $ps->bind_param('ssssssssssi',
-                $officerId, $classYear, $branch, $assignment,
-                $licNum, $certNum, $transNum,
-                $licIssued, $licExpiry, $licStatus, $userId
-            );
-            $ps->execute(); $ps->close();
+            $conn->query("UPDATE officer_profiles SET officer_id=$officerIdSql, class_year=$classYrSql, branch_of_service=$branchSql, current_assignment=$assignSql, license_number=$licNumSql, certificate_number=$certNumSql, transition_number=$transNumSql, license_issued=$licIssuedSql, license_expiry=$licExpirySql, license_status=$licStatusSql WHERE user_id=$userId");
         } else {
-            // INSERT if profile doesn't exist yet
-            $ps = $conn->prepare("
-                INSERT INTO officer_profiles
-                    (user_id, officer_id, class_year, branch_of_service,
-                     current_assignment, license_number, certificate_number,
-                     transition_number, license_issued, license_expiry, license_status)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?)
-            ");
-            $ps->bind_param('issssssssss',
-                $userId, $officerId, $classYear, $branch, $assignment,
-                $licNum, $certNum, $transNum,
-                $licIssued, $licExpiry, $licStatus
-            );
-            $ps->execute(); $ps->close();
+            $conn->query("INSERT INTO officer_profiles (user_id,officer_id,class_year,branch_of_service,current_assignment,license_number,certificate_number,transition_number,license_issued,license_expiry,license_status) VALUES ($userId,$officerIdSql,$classYrSql,$branchSql,$assignSql,$licNumSql,$certNumSql,$transNumSql,$licIssuedSql,$licExpirySql,$licStatusSql)");
         }
     }
 
@@ -151,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'New password must be at least 8 characters.';
         } else {
             $hash = password_hash($_POST['new_password'], PASSWORD_BCRYPT);
-            $conn->query("UPDATE users SET password='$hash' WHERE id=$userId");
+            $conn->query("UPDATE users SET password='" . $conn->real_escape_string($hash) . "' WHERE id=$userId");
         }
     }
 
@@ -160,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect(BASE_URL . 'pages/admin/users.php?saved=1');
     }
 
-    // Refresh data on error
+    // Refresh
     $user           = $conn->query("SELECT * FROM users WHERE id=$userId")->fetch_assoc();
     $cadetProfile   = $conn->query("SELECT * FROM cadet_profiles  WHERE user_id=$userId")->fetch_assoc();
     $officerProfile = $conn->query("SELECT * FROM officer_profiles WHERE user_id=$userId")->fetch_assoc();
@@ -225,6 +193,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                 </div>
             </div>
             <hr class="separator-red">
+
             <!-- ===== CORE FIELDS ===== -->
             <div class="row g-3">
                 <div class="col-md-4">
@@ -284,9 +253,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
             <hr class="separator-red mt-4">
             <h6 class="text-pmas-red fw-bold mb-3">
                 <i class="fas fa-id-badge me-2"></i>Cadet Profile
-                <small class="text-muted fw-normal ms-2" style="font-size:11px;">
-                    — changes reflect on the Cadet ID Card immediately
-                </small>
+                <small class="text-muted fw-normal ms-2" style="font-size:11px;">— changes reflect on the Cadet ID Card immediately</small>
             </h6>
             <div class="row g-3">
                 <div class="col-md-3">
@@ -319,10 +286,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                     <label class="pmas-form-label">Cadet Status</label>
                     <select name="cadet_status" class="form-select">
                         <?php foreach (['active','graduated','dismissed','resigned'] as $s): ?>
-                        <option value="<?= $s ?>"
-                            <?= ($cadetProfile['status'] ?? 'active') === $s ? 'selected' : '' ?>>
-                            <?= ucfirst($s) ?>
-                        </option>
+                        <option value="<?= $s ?>" <?= ($cadetProfile['status'] ?? 'active') === $s ? 'selected' : '' ?>><?= ucfirst($s) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -334,9 +298,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
             <hr class="separator-red mt-4">
             <h6 class="text-pmas-red fw-bold mb-3">
                 <i class="fas fa-id-card me-2"></i>Officer Profile &amp; License
-                <small class="text-muted fw-normal ms-2" style="font-size:11px;">
-                    — changes reflect on the Officer License Card immediately
-                </small>
+                <small class="text-muted fw-normal ms-2" style="font-size:11px;">— changes reflect on the Officer License Card immediately</small>
             </h6>
             <div class="row g-3">
                 <div class="col-md-3">
@@ -360,16 +322,12 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                            value="<?= sanitize($officerProfile['current_assignment'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
-                    <label class="pmas-form-label">License Number
-                        <small class="text-muted fw-normal">(auto-generated if blank)</small>
-                    </label>
+                    <label class="pmas-form-label">License Number <small class="text-muted fw-normal">(auto-generated if blank)</small></label>
                     <input type="text" name="license_number" class="form-control"
                            value="<?= sanitize($officerProfile['license_number'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
-                    <label class="pmas-form-label">Certificate Number
-                        <small class="text-muted fw-normal">(auto-generated if blank)</small>
-                    </label>
+                    <label class="pmas-form-label">Certificate Number <small class="text-muted fw-normal">(auto-generated if blank)</small></label>
                     <input type="text" name="certificate_number" class="form-control"
                            value="<?= sanitize($officerProfile['certificate_number'] ?? '') ?>">
                 </div>
@@ -392,10 +350,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                     <label class="pmas-form-label">License Status</label>
                     <select name="license_status" class="form-select">
                         <?php foreach (['valid','expired','revoked','suspended'] as $ls): ?>
-                        <option value="<?= $ls ?>"
-                            <?= ($officerProfile['license_status'] ?? 'valid') === $ls ? 'selected' : '' ?>>
-                            <?= ucfirst($ls) ?>
-                        </option>
+                        <option value="<?= $ls ?>" <?= ($officerProfile['license_status'] ?? 'valid') === $ls ? 'selected' : '' ?>><?= ucfirst($ls) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -417,12 +372,10 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
 <?php include '../../includes/footer.php'; ?>
 
 <script>
-// Live photo preview
 document.getElementById('profilePhotoInput').addEventListener('change', function () {
     const file = this.files[0];
     if (!file) return;
-    const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) {
+    if (file.size > 5 * 1024 * 1024) {
         alert('Photo exceeds 5MB limit.');
         this.value = '';
         return;

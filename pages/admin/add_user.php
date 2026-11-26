@@ -34,30 +34,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Create profile depending on role
         if ($role === 'cadet') {
-            $cadetId   = sanitize($_POST['cadet_id']);
-            $classYear = sanitize($_POST['class_year']);
-            $company   = sanitize($_POST['company']);
-            $battalion = sanitize($_POST['battalion']);
-            $enrolled  = sanitize($_POST['date_enrolled']);
-            $ps = $conn->prepare("INSERT INTO cadet_profiles (user_id,cadet_id,class_year,company,battalion,date_enrolled) VALUES (?,?,?,?,?,?)");
-            $ps->bind_param('isssss', $newId, $cadetId, $classYear, $company, $battalion, $enrolled);
-            $ps->execute();
-            $ps->close();
+            $cadetId   = sanitize($_POST['cadet_id']      ?? '');
+            $classYear = sanitize($_POST['class_year']    ?? '');
+            $company   = sanitize($_POST['company']       ?? '');
+            $battalion = sanitize($_POST['battalion']     ?? '');
+            $enrolled  = sanitize($_POST['date_enrolled'] ?? '');
+
+            // Convert empty date to NULL for MySQL strict mode
+            $enrolledSql = !empty($enrolled) ? "'" . $conn->real_escape_string($enrolled) . "'" : 'NULL';
+            $cadetIdSql  = "'" . $conn->real_escape_string($cadetId)   . "'";
+            $classYrSql  = !empty($classYear) ? "'" . $conn->real_escape_string($classYear) . "'" : 'NULL';
+            $companySql  = !empty($company)   ? "'" . $conn->real_escape_string($company)   . "'" : 'NULL';
+            $battnSql    = !empty($battalion) ? "'" . $conn->real_escape_string($battalion) . "'" : 'NULL';
+
+            $conn->query("INSERT INTO cadet_profiles (user_id,cadet_id,class_year,company,battalion,date_enrolled)
+                          VALUES ($newId,$cadetIdSql,$classYrSql,$companySql,$battnSql,$enrolledSql)");
         }
 
         if ($role === 'officer') {
-            $officerId   = sanitize($_POST['officer_id']);
-            $classYear   = sanitize($_POST['class_year']);
-            $branch      = sanitize($_POST['branch_of_service']);
-            $assignment  = sanitize($_POST['current_assignment']);
-            $licNum      = sanitize($_POST['license_number']);
-            $licIssued   = sanitize($_POST['license_issued']);
-            $licExpiry   = sanitize($_POST['license_expiry']);
-            $licStatus   = sanitize($_POST['license_status']);
-            $ps = $conn->prepare("INSERT INTO officer_profiles (user_id,officer_id,class_year,branch_of_service,current_assignment,license_number,license_issued,license_expiry,license_status) VALUES (?,?,?,?,?,?,?,?,?)");
-            $ps->bind_param('issssssss', $newId, $officerId, $classYear, $branch, $assignment, $licNum, $licIssued, $licExpiry, $licStatus);
-            $ps->execute();
-            $ps->close();
+            $officerId   = sanitize($_POST['officer_id']          ?? '');
+            $classYear   = sanitize($_POST['class_year']          ?? '');
+            $branch      = sanitize($_POST['branch_of_service']   ?? '');
+            $assignment  = sanitize($_POST['current_assignment']  ?? '');
+            $licNum      = sanitize($_POST['license_number']      ?? '');
+            $licIssued   = sanitize($_POST['license_issued']      ?? '');
+            $licExpiry   = sanitize($_POST['license_expiry']      ?? '');
+            $licStatus   = sanitize($_POST['license_status']      ?? 'valid');
+
+            // Convert empty dates to NULL
+            $licIssuedSql  = !empty($licIssued) ? "'" . $conn->real_escape_string($licIssued) . "'" : 'NULL';
+            $licExpirySql  = !empty($licExpiry) ? "'" . $conn->real_escape_string($licExpiry) . "'" : 'NULL';
+            $officerIdSql  = "'" . $conn->real_escape_string($officerId)  . "'";
+            $classYrSql    = !empty($classYear) ? "'" . $conn->real_escape_string($classYear) . "'" : 'NULL';
+            $branchSql     = !empty($branch)    ? "'" . $conn->real_escape_string($branch)    . "'" : 'NULL';
+            $assignSql     = !empty($assignment)? "'" . $conn->real_escape_string($assignment). "'" : 'NULL';
+            $licNumSql     = !empty($licNum)    ? "'" . $conn->real_escape_string($licNum)    . "'" : 'NULL';
+            $licStatusSql  = "'" . $conn->real_escape_string($licStatus) . "'";
+
+            $conn->query("INSERT INTO officer_profiles
+                          (user_id,officer_id,class_year,branch_of_service,current_assignment,
+                           license_number,license_issued,license_expiry,license_status)
+                          VALUES ($newId,$officerIdSql,$classYrSql,$branchSql,$assignSql,
+                                  $licNumSql,$licIssuedSql,$licExpirySql,$licStatusSql)");
         }
 
         logAction($conn, $_SESSION['user_id'], 'ADD_USER', 'Users', "Added user: $username ($role)");
