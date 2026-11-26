@@ -68,6 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $enrolled  = sanitize($_POST['date_enrolled'] ?? '');
         $cStatus   = sanitize($_POST['cadet_status']  ?? 'active');
 
+        // Truncate cadet_id to 100 chars max (column is VARCHAR 100)
+        $cadetId = substr($cadetId, 0, 100);
+
         $cadetIdSql  = escStr($conn, $cadetId);
         $classYrSql  = esc($conn, $classYear);
         $companySql  = esc($conn, $company);
@@ -260,7 +263,7 @@ include '../../includes/header.php'; include '../../includes/sidebar.php';
                     <label class="pmas-form-label">Cadet ID</label>
                     <input type="text" name="cadet_id" class="form-control"
                            placeholder="e.g. B01-001"
-                           value="<?= sanitize($cadetProfile['cadet_id'] ?? $user['username']) ?>">
+                           value="<?= sanitize($cadetProfile['cadet_id'] ?? '') ?>">
                 </div>
                 <div class="col-md-3">
                     <label class="pmas-form-label">Class Year</label>

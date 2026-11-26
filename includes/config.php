@@ -121,6 +121,14 @@ if ($_tbl && $_tbl->num_rows > 0) {
     if ($col3 && $col3->num_rows === 0) {
         $conn->query("ALTER TABLE officer_profiles ADD COLUMN transition_number VARCHAR(40) DEFAULT NULL AFTER certificate_number");
     }
+    // Widen cadet_id to VARCHAR(100) if it is still VARCHAR(20)
+    $col4 = $conn->query("SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='cadet_profiles' AND COLUMN_NAME='cadet_id'");
+    if ($col4) {
+        $len = (int)($col4->fetch_row()[0] ?? 0);
+        if ($len < 100) {
+            $conn->query("ALTER TABLE cadet_profiles MODIFY COLUMN cadet_id VARCHAR(100) NOT NULL");
+        }
+    }
 }
 
 
